@@ -29,6 +29,5 @@ Aggiungi un canale per la traduzione (ad esempio, #example_channel):
 Aggiungi un nick per la traduzione in query (ad esempio, example_nick):
 /msg *traduzio addnick example_nick
 
-Codici Lingua
 Puoi trovare l'elenco completo dei codici lingua supportati da Google Translate nella documentazione ufficiale.
 https://cloud.google.com/translate/docs/languages
