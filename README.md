@@ -14,20 +14,20 @@
 Imposta la chiave API di Google Translate:<br>
 ` /msg *traduzio setapi your_api_key_here` 
 
-Imposta la lingua di origine (la tua lingua, italiano):
+Imposta la lingua di origine (la tua lingua, italiano):<br>
 ` /msg *traduzio from it` 
 
-Imposta la lingua di destinazione (ad esempio, inglese):
+Imposta la lingua di destinazione (ad esempio, inglese):<br>
 ` /msg *traduzio to en` 
 
-Abilita la traduzione:
+Abilita la traduzione:<br>
 ` /msg *traduzio enable` 
 
-Aggiungi un canale per la traduzione (ad esempio, #example_channel):
+Aggiungi un canale per la traduzione (ad esempio, #example_channel):<br>
 ` /msg *traduzio addchan #example_channel` 
 
-Aggiungi un nick per la traduzione in query (ad esempio, example_nick):
+Aggiungi un nick per la traduzione in query (ad esempio, example_nick):<br>
 ` /msg *traduzio addnick example_nick` 
 
-Puoi trovare l'elenco completo dei codici lingua supportati da Google Translate nella documentazione ufficiale.
+Puoi trovare l'elenco completo dei codici lingua supportati da Google Translate nella documentazione ufficiale.<br>
 ` https://cloud.google.com/translate/docs/languages` 
