@@ -1,6 +1,6 @@
 # Traduzio
 
-**Traduzio** è un modulo per scritto in python per [ZNC](https://znc.in/) che traduce automaticamente i messaggi utilizzando Google Translate API. Deve essere utilizzato con `modpython`.
+**Traduzio** è un modulo per scritto in python per [ZNC](https://znc.in/) che traduce automaticamente i messaggi utilizzando le API di Google Translate. Deve essere utilizzato con `modpython`.
 
 ## Funzionalità
 
