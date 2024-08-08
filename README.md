@@ -30,4 +30,4 @@ Aggiungi un nick per la traduzione in query (ad esempio, example_nick):<br>
 ` /msg *traduzio addnick example_nick` 
 
 Puoi trovare l'elenco completo dei codici lingua supportati da Google Translate nella documentazione ufficiale.<br>
-` https://cloud.google.com/translate/docs/languages` 
+[https://cloud.google.com/translate/docs/languages](https://cloud.google.com/translate/docs/languages)
