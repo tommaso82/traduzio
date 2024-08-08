@@ -12,7 +12,7 @@
 Esempio di Utilizzo
 
 Imposta la chiave API di Google Translate:
-/msg *traduzio setapi your_api_key_here
+` /msg *traduzio setapi your_api_key_here` 
 
 Imposta la lingua di origine (la tua lingua, italiano):
 /msg *traduzio from it
