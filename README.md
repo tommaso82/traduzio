@@ -1,6 +1,6 @@
 # Traduzio
 
-**Traduzio** è un modulo per [ZNC](https://znc.in/) che traduce automaticamente i messaggi utilizzando Google Translate API. Configura le lingue di origine e destinazione e abilita la traduzione su canali e nick specifici.
+**Traduzio** è un modulo per [ZNC](https://znc.in/) che traduce automaticamente i messaggi utilizzando Google Translate API.
 
 ## Funzionalità
 
