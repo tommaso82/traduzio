@@ -23,7 +23,7 @@ class traduzio(znc.Module):
         return znc.CONTINUE
 
     def OnChanMsg(self, nick, channel, message):
-        if self.enabled and channel.GetName() in self.channels:
+        if self.enabled and channel.GetName().lower() in self.channels:
             translated_message = self.translate_message(message.s, self.default_target_language, self.default_source_language)
             message.s = translated_message
         return znc.CONTINUE
