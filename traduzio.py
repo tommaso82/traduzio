@@ -46,15 +46,17 @@ class traduzio(znc.Module):
         }
         if source_lang:
             params['source'] = source_lang
-        response = requests.get(url, params=params)
-        response_json = response.json()
-        if response.status_code == 200 and 'data' in response_json and 'translations' in response_json['data']:
-            translated_text = response_json['data']['translations'][0]['translatedText']
-            decoded_text = html.unescape(translated_text)
-            return decoded_text
-        else:
+        try:
+            response = requests.get(url, params=params, timeout=10)
+            response_json = response.json()
+            if response.status_code == 200 and 'data' in response_json and 'translations' in response_json['data']:
+                translated_text = response_json['data']['translations'][0]['translatedText']
+                decoded_text = html.unescape(translated_text)
+                return decoded_text
             self.PutModule(f"Errore nella risposta della traduzione: {response_json}")
-            return text
+        except (requests.RequestException, ValueError, KeyError, IndexError, TypeError):
+            self.PutModule("Errore nella traduzione: connessione o risposta non valida.")
+        return text
 
     def cmd_setapi(self, api_key):
         self.api_key = api_key
