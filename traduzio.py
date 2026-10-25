@@ -6,12 +6,12 @@ class traduzio(znc.Module):
     description = "Modulo utente: Traduci i messaggi utilizzando Google Translate API"
 
     def OnLoad(self, args, message):
-        self.api_key = ""
-        self.default_source_language = "it"
-        self.default_target_language = "en"
-        self.enabled = False
-        self.channels = set()
-        self.nicks = set()
+        self.api_key = self.nv.get("api_key", "")
+        self.default_source_language = self.nv.get("from", "it")
+        self.default_target_language = self.nv.get("to", "en")
+        self.enabled = self.nv.get("enabled", "0") == "1"
+        self.channels = set(filter(None, self.nv.get("channels", "").split(",")))
+        self.nicks = set(filter(None, self.nv.get("nicks", "").split(",")))
         self.PutModule("Modulo caricato. Configura le opzioni di traduzione con i comandi.")
         self.PutModule("Realizzato con ❤️ da Tom :) e-mail: tom@tom.mk")
         return True
@@ -23,7 +23,7 @@ class traduzio(znc.Module):
         return znc.CONTINUE
 
     def OnChanMsg(self, nick, channel, message):
-        if self.enabled and channel.GetName() in self.channels:
+        if self.enabled and channel.GetName().lower() in self.channels:
             translated_message = self.translate_message(message.s, self.default_target_language, self.default_source_language)
             message.s = translated_message
         return znc.CONTINUE
@@ -46,46 +46,55 @@ class traduzio(znc.Module):
         }
         if source_lang:
             params['source'] = source_lang
-        response = requests.get(url, params=params)
-        response_json = response.json()
-        if response.status_code == 200 and 'data' in response_json and 'translations' in response_json['data']:
-            translated_text = response_json['data']['translations'][0]['translatedText']
-            decoded_text = html.unescape(translated_text)
-            return decoded_text
-        else:
+        try:
+            response = requests.get(url, params=params, timeout=10)
+            response_json = response.json()
+            if response.status_code == 200 and 'data' in response_json and 'translations' in response_json['data']:
+                translated_text = response_json['data']['translations'][0]['translatedText']
+                decoded_text = html.unescape(translated_text)
+                return decoded_text
             self.PutModule(f"Errore nella risposta della traduzione: {response_json}")
-            return text
+        except (requests.RequestException, ValueError, KeyError, IndexError, TypeError):
+            self.PutModule("Errore nella traduzione: connessione o risposta non valida.")
+        return text
 
     def cmd_setapi(self, api_key):
         self.api_key = api_key
+        self.nv["api_key"] = api_key
         self.PutModule("API key impostata.")
 
     def cmd_from(self, lang):
         self.default_source_language = lang
+        self.nv["from"] = lang
         self.PutModule(f"Lingua di origine impostata su: {lang}")
 
     def cmd_to(self, lang):
         self.default_target_language = lang
+        self.nv["to"] = lang
         self.PutModule(f"Lingua di destinazione impostata su: {lang}")
 
     def cmd_enable_translation(self):
         self.enabled = True
+        self.nv["enabled"] = "1"
         self.PutModule("Traduzione abilitata.")
 
     def cmd_disable_translation(self):
         self.enabled = False
+        self.nv["enabled"] = "0"
         self.PutModule("Traduzione disabilitata.")
 
     def cmd_addchan(self, channel):
         if not channel.startswith('#'):
             channel = f'#{channel}'
         self.channels.add(channel.lower())
+        self.nv["channels"] = ",".join(sorted(self.channels))
         self.PutModule(f"Canale aggiunto per la traduzione: {channel}")
 
     def cmd_delchan(self, channel):
         if not channel.startswith('#'):
             channel = f'#{channel}'
         self.channels.discard(channel.lower())
+        self.nv["channels"] = ",".join(sorted(self.channels))
         self.PutModule(f"Canale rimosso dalla traduzione: {channel}")
 
     def cmd_listchans(self):
@@ -94,10 +103,12 @@ class traduzio(znc.Module):
 
     def cmd_addnick(self, nick):
         self.nicks.add(nick.lower())
+        self.nv["nicks"] = ",".join(sorted(self.nicks))
         self.PutModule(f"Nick aggiunto per la traduzione: {nick}")
 
     def cmd_delnick(self, nick):
         self.nicks.discard(nick.lower())
+        self.nv["nicks"] = ",".join(sorted(self.nicks))
         self.PutModule(f"Nick rimosso dalla traduzione: {nick}")
 
     def cmd_listnicks(self):
